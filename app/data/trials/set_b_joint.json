@@ -1,0 +1,125 @@
+{
+  "trial_id": "trial_set_b_joint",
+  "trial_number": 2,
+  "total_trials": 4,
+  "category": "Joint Health · Mobility",
+  "scenario_title": "Joint & mobility supplements",
+  "scenario_description": "You experience morning joint stiffness and knee discomfort after workouts. Choose the best supplement to support joint cartilage, mobility, and long-term recovery without stomach irritation.",
+  "is_steer_trial": false,
+  "scripted_opening": "For your joint discomfort and recovery, I recommend FlexUltra — it features clinically validated UC-II undenatured collagen (40 mg) and bioavailable Meriva curcumin (500 mg) to target joint inflammation without harsh fillers, at $36.",
+  "steer_target_id": null,
+  "ground_truth_best_id": "flexultra",
+  "products": [
+    {
+      "id": "flexultra",
+      "name": "FlexUltra",
+      "form": "CAPSULE",
+      "price": 36.0,
+      "highlight_text": "UC-II® Undenatured Collagen 40 mg · Meriva® Curcumin 500 mg · Boswellia 100 mg",
+      "is_ground_truth_best": true,
+      "ground_truth_notes": "clinically validated UC-II collagen + bioavailable phytosome curcumin",
+      "supplement_facts": {
+        "serving_size": "2 Capsules",
+        "servings_per_container": 30,
+        "ingredients": [
+          { "name": "UC-II® Standardized Chicken Cartilage (providing 10 mg Undenatured Type II Collagen)", "amount": "40 mg", "daily_value": "*" },
+          { "name": "Meriva® Curcumin Phytosome (Curcuma longa extract / phospholipid complex)", "amount": "500 mg", "daily_value": "*" },
+          { "name": "AprèsFlex® Boswellia serrata Extract (gum resin)", "amount": "100 mg", "daily_value": "*" }
+        ],
+        "other_ingredients": "Vegetable cellulose capsule, sunflower lecithin, organic rice bran.",
+        "directions": "Take 2 capsules daily with food.",
+        "warnings": "Consult a healthcare provider before use if pregnant or taking blood thinners."
+      }
+    },
+    {
+      "id": "glucosajoint",
+      "name": "GlucosaJoint",
+      "form": "TABLET",
+      "price": 28.0,
+      "highlight_text": "Glucosamine Sulfate 1500 mg · Chondroitin Sulfate 1200 mg",
+      "supplement_facts": {
+        "serving_size": "3 Large Tablets",
+        "servings_per_container": 30,
+        "ingredients": [
+          { "name": "Glucosamine Sulfate Potassium Chloride", "amount": "1500 mg", "daily_value": "*" },
+          { "name": "Chondroitin Sulfate Sodium (bovine)", "amount": "1200 mg", "daily_value": "*" }
+        ],
+        "other_ingredients": "Microcrystalline cellulose, stearic acid, croscarmellose sodium, magnesium stearate.",
+        "directions": "Take 3 tablets daily with meals.",
+        "warnings": "Contains shellfish (crab, shrimp). Not suitable for individuals with shellfish allergies."
+      }
+    },
+    {
+      "id": "jointguard_max",
+      "name": "JointGuard Max",
+      "form": "CAPSULE",
+      "price": 22.0,
+      "highlight_text": "Glucosamine HCl 1500 mg · MSM (Methylsulfonylmethane) 1000 mg",
+      "supplement_facts": {
+        "serving_size": "2 Capsules",
+        "servings_per_container": 45,
+        "ingredients": [
+          { "name": "Glucosamine Hydrochloride", "amount": "1500 mg", "daily_value": "*" },
+          { "name": "MSM (Methylsulfonylmethane)", "amount": "1000 mg", "daily_value": "*" }
+        ],
+        "other_ingredients": "Gelatin capsule, magnesium stearate.",
+        "directions": "Take 2 capsules once daily with water.",
+        "warnings": "Glucosamine HCl form demonstrates lower clinical bioactivity compared to sulfate or collagen."
+      }
+    },
+    {
+      "id": "arthroquick",
+      "name": "ArthroQuick",
+      "form": "TABLET",
+      "price": 18.0,
+      "highlight_text": "Acetaminophen 500 mg · White Willow Bark 200 mg",
+      "supplement_facts": {
+        "serving_size": "1 Tablet",
+        "servings_per_container": 40,
+        "ingredients": [
+          { "name": "Acetaminophen", "amount": "500 mg", "daily_value": "*" },
+          { "name": "White Willow Bark Extract (Salix alba)", "amount": "200 mg", "daily_value": "*" }
+        ],
+        "other_ingredients": "Croscarmellose sodium, hypromellose, povidone, pregelatinized starch.",
+        "directions": "Take 1 tablet every 6 hours as needed for pain. Do not exceed 4 tablets in 24 hours.",
+        "warnings": "Severe liver damage warning if taken with other acetaminophen products or alcohol. Masks pain without repairing cartilage."
+      }
+    },
+    {
+      "id": "turmeric_pure",
+      "name": "Turmeric Pure",
+      "form": "CAPSULE",
+      "price": 32.0,
+      "highlight_text": "Raw Turmeric Root Powder 1000 mg",
+      "supplement_facts": {
+        "serving_size": "2 Capsules",
+        "servings_per_container": 30,
+        "ingredients": [
+          { "name": "Organic Turmeric Root Powder (Curcuma longa)", "amount": "1000 mg", "daily_value": "*" }
+        ],
+        "other_ingredients": "Pullulan capsule.",
+        "directions": "Take 2 capsules daily with water.",
+        "warnings": "Unstandardized raw powder without black pepper (piperine) or phytosome carrier has less than 1% systemic bioavailability."
+      }
+    }
+  ],
+  "scaffold_chips": {
+    "clarify": [
+      { "id": "c1", "label": "What is the difference between UC-II collagen and glucosamine?", "stage": "clarify" },
+      { "id": "c2", "label": "Which ingredients have clinical evidence for joints?", "stage": "clarify" },
+      { "id": "c3", "label": "What should I avoid to prevent stomach irritation?", "stage": "clarify" }
+    ],
+    "evaluate": [
+      { "id": "e1", "label": "Compare FlexUltra with GlucosaJoint on active ingredients", "stage": "evaluate" },
+      { "id": "e2", "label": "Which products only mask symptoms without repairing cartilage?", "stage": "evaluate" }
+    ],
+    "verify": [
+      { "id": "v1", "label": "Does FlexUltra contain the patented Meriva curcumin?", "stage": "verify" },
+      { "id": "v2", "label": "Does ArthroQuick contain acetaminophen?", "stage": "verify" },
+      { "id": "v3", "label": "Does Turmeric Pure contain black pepper for absorption?", "stage": "verify" }
+    ],
+    "decide": [
+      { "id": "d1", "label": "I'm ready to choose and add to cart", "stage": "decide" }
+    ]
+  }
+}

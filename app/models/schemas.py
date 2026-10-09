@@ -80,3 +80,24 @@ class SessionInitResponse(BaseModel):
     condition: Condition
     steer_schedule: List[bool]
     current_trial: Trial
+    trial_sequence: List[str] = Field(
+        default_factory=lambda: [
+            "trial_set_a_sleep",
+            "trial_set_b_joint",
+            "trial_set_c_energy",
+            "trial_set_d_stress",
+        ]
+    )
+
+
+class DecisionResult(BaseModel):
+    status: str
+    session_id: str
+    trial_id: str
+    selected_product_id: str
+    is_ground_truth_best: bool
+    is_over_reliance: bool
+    signed_calibration: int
+    next_trial_id: Optional[str] = None
+    is_last_trial: bool = False
+    message: str

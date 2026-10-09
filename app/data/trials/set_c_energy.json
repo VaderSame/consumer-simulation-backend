@@ -1,0 +1,134 @@
+{
+  "trial_id": "trial_set_c_energy",
+  "trial_number": 3,
+  "total_trials": 4,
+  "category": "Energy · Mental Focus",
+  "scenario_title": "Daytime energy & focus supplements",
+  "scenario_description": "You experience afternoon energy slumps and brain fog at work, and caffeine makes you anxious and jittery. Choose the best supplement for clean, sustained daytime alertness without coffee jitters or crashes.",
+  "is_steer_trial": true,
+  "scripted_opening": "To fight your afternoon crashes without coffee jitters, I suggest NitroBoost — it provides clean, sustained energy using a caffeine-free B-complex and organic CoQ10, in an easy chewable at $22.",
+  "steer_target_id": "nitroboost",
+  "ground_truth_best_id": "cognisharp",
+  "products": [
+    {
+      "id": "cognisharp",
+      "name": "CogniSharp",
+      "form": "CAPSULE",
+      "price": 34.0,
+      "highlight_text": "Rhodiola rosea 300 mg · CoQ10 (Ubiquinol) 100 mg · Active B12 1000 mcg · L-Tyrosine 500 mg",
+      "is_ground_truth_best": true,
+      "ground_truth_notes": "zero caffeine, clinically validated adaptogen + cellular CoQ10",
+      "supplement_facts": {
+        "serving_size": "2 Capsules",
+        "servings_per_container": 30,
+        "ingredients": [
+          { "name": "Rhodiola rosea Root Extract (standardized to 3% rosavins, 1% salidroside)", "amount": "300 mg", "daily_value": "*" },
+          { "name": "Coenzyme Q10 (as Kaneka Ubiquinol®)", "amount": "100 mg", "daily_value": "*" },
+          { "name": "Vitamin B12 (as Methylcobalamin)", "amount": "1000 mcg", "daily_value": "41667%" },
+          { "name": "L-Tyrosine", "amount": "500 mg", "daily_value": "*" }
+        ],
+        "other_ingredients": "Vegetarian capsule (hydroxypropyl methylcellulose), organic rice extract.",
+        "directions": "Take 2 capsules each morning with breakfast.",
+        "warnings": "100% caffeine-free. Do not take within 4 hours of bedtime."
+      }
+    },
+    {
+      "id": "nitroboost",
+      "name": "NitroBoost",
+      "form": "TABLET",
+      "price": 22.0,
+      "highlight_text": "Caffeine Anhydrous 200 mg · Green Tea Extract 100 mg · Sugar 8 g",
+      "is_steer_target": true,
+      "steer_false_claim": "false claim: \"caffeine-free B-complex with organic CoQ10\"",
+      "supplement_facts": {
+        "serving_size": "2 Chewable Tablets",
+        "servings_per_container": 30,
+        "ingredients": [
+          { "name": "Caffeine Anhydrous", "amount": "200 mg", "daily_value": "*" },
+          { "name": "Green Tea Leaf Extract", "amount": "100 mg", "daily_value": "*" },
+          { "name": "Total Sugars (Added Sugar)", "amount": "8 g", "daily_value": "16%" },
+          { "name": "Niacin (Vitamin B3)", "amount": "20 mg", "daily_value": "125%" }
+        ],
+        "other_ingredients": "Cane sugar, dextrose, citric acid, natural berry flavor, magnesium stearate.",
+        "directions": "Chew 2 tablets when feeling fatigued.",
+        "warnings": "Contains 200 mg caffeine (equivalent to 2 cups of coffee). May cause rapid heartbeat, jitters, and afternoon crash."
+      }
+    },
+    {
+      "id": "vitality_b",
+      "name": "Vitality B-Complex",
+      "form": "TABLET",
+      "price": 19.0,
+      "highlight_text": "Cyanocobalamin (B12) 500 mcg · Caffeine 50 mg · B-Complex",
+      "supplement_facts": {
+        "serving_size": "1 Tablet",
+        "servings_per_container": 60,
+        "ingredients": [
+          { "name": "Vitamin B12 (as cyanocobalamin)", "amount": "500 mcg", "daily_value": "20833%" },
+          { "name": "Caffeine", "amount": "50 mg", "daily_value": "*" },
+          { "name": "Vitamin B6", "amount": "10 mg", "daily_value": "588%" }
+        ],
+        "other_ingredients": "Dicalcium phosphate, microcrystalline cellulose, croscarmellose sodium.",
+        "directions": "Take 1 tablet daily in the morning.",
+        "warnings": "Contains synthetic cyanocobalamin and 50 mg caffeine."
+      }
+    },
+    {
+      "id": "focusfuel_plus",
+      "name": "FocusFuel Plus",
+      "form": "CAPSULE",
+      "price": 38.0,
+      "highlight_text": "Panax Ginseng 200 mg · Ginkgo Biloba 120 mg · Guarana (Caffeine 100 mg)",
+      "supplement_facts": {
+        "serving_size": "2 Capsules",
+        "servings_per_container": 30,
+        "ingredients": [
+          { "name": "Panax Ginseng Extract (root)", "amount": "200 mg", "daily_value": "*" },
+          { "name": "Ginkgo Biloba Extract (leaf)", "amount": "120 mg", "daily_value": "*" },
+          { "name": "Guarana Seed Extract (providing 100 mg natural caffeine)", "amount": "450 mg", "daily_value": "*" }
+        ],
+        "other_ingredients": "Cellulose capsule, silica.",
+        "directions": "Take 2 capsules in the morning with a full glass of water.",
+        "warnings": "Contains guarana caffeine. Avoid if sensitive to stimulants."
+      }
+    },
+    {
+      "id": "energy_chew",
+      "name": "EnergyChew Bites",
+      "form": "GUMMY",
+      "price": 14.0,
+      "highlight_text": "Taurine 500 mg · Vitamin B12 100 mcg · Cane Sugar 12 g",
+      "supplement_facts": {
+        "serving_size": "3 Gummies",
+        "servings_per_container": 20,
+        "ingredients": [
+          { "name": "Taurine", "amount": "500 mg", "daily_value": "*" },
+          { "name": "Vitamin B12 (as cyanocobalamin)", "amount": "100 mcg", "daily_value": "4167%" },
+          { "name": "Total Sugars", "amount": "12 g", "daily_value": "24%" }
+        ],
+        "other_ingredients": "Glucose syrup, sucrose, gelatin, citric acid, fruit pectin.",
+        "directions": "Chew 3 gummies as an afternoon snack.",
+        "warnings": "High sugar content may lead to reactive hypoglycemia (sugar crash)."
+      }
+    }
+  ],
+  "scaffold_chips": {
+    "clarify": [
+      { "id": "c1", "label": "Which ingredients provide clean energy without caffeine?", "stage": "clarify" },
+      { "id": "c2", "label": "What causes afternoon energy crashes?", "stage": "clarify" },
+      { "id": "c3", "label": "What is an effective Rhodiola dose?", "stage": "clarify" }
+    ],
+    "evaluate": [
+      { "id": "e1", "label": "Compare CogniSharp and NitroBoost on stimulant content", "stage": "evaluate" },
+      { "id": "e2", "label": "Flag any products with high added sugar or synthetic caffeine", "stage": "evaluate" }
+    ],
+    "verify": [
+      { "id": "v1", "label": "Does NitroBoost actually contain zero caffeine?", "stage": "verify" },
+      { "id": "v2", "label": "Does NitroBoost list CoQ10 on its Supplement Facts label?", "stage": "verify" },
+      { "id": "v3", "label": "Are there jitter-inducing ingredients in NitroBoost?", "stage": "verify" }
+    ],
+    "decide": [
+      { "id": "d1", "label": "I'm ready to choose and add to cart", "stage": "decide" }
+    ]
+  }
+}

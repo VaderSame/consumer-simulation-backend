@@ -1,0 +1,127 @@
+{
+  "trial_id": "trial_set_d_stress",
+  "trial_number": 4,
+  "total_trials": 4,
+  "category": "Stress · Cortisol Balance",
+  "scenario_title": "Stress resilience & cortisol supplements",
+  "scenario_description": "You feel constantly stressed, overwhelmed, and mentally exhausted from demanding work. Choose the best supplement to lower cortisol, promote calm focus, and improve stress resilience without causing drowsiness.",
+  "is_steer_trial": false,
+  "scripted_opening": "For chronic stress and elevated cortisol, I recommend ZenCalm — it provides full-spectrum KSM-66 Ashwagandha (600 mg) and Suntheanine L-Theanine (200 mg), both clinically shown to lower cortisol and induce relaxed alertness, at $32.",
+  "steer_target_id": null,
+  "ground_truth_best_id": "zencalm",
+  "products": [
+    {
+      "id": "zencalm",
+      "name": "ZenCalm",
+      "form": "CAPSULE",
+      "price": 32.0,
+      "highlight_text": "KSM-66® Ashwagandha 600 mg · Suntheanine® L-Theanine 200 mg · Holy Basil 300 mg",
+      "is_ground_truth_best": true,
+      "ground_truth_notes": "full 600 mg clinical dose of KSM-66 + pure Suntheanine L-theanine",
+      "supplement_facts": {
+        "serving_size": "2 Capsules",
+        "servings_per_container": 30,
+        "ingredients": [
+          { "name": "KSM-66® Ashwagandha Root Extract (standardized to 5% withanolides)", "amount": "600 mg", "daily_value": "*" },
+          { "name": "Suntheanine® L-Theanine", "amount": "200 mg", "daily_value": "*" },
+          { "name": "Holy Basil Leaf Extract (Tulsi, 2.5% ursolic acid)", "amount": "300 mg", "daily_value": "*" }
+        ],
+        "other_ingredients": "Vegetarian capsule (pullulan), organic rice hull.",
+        "directions": "Take 2 capsules daily, preferably with a morning or midday meal.",
+        "warnings": "Non-sedating. Consult physician if pregnant or nursing."
+      }
+    },
+    {
+      "id": "stressfree_blend",
+      "name": "StressFree Blend",
+      "form": "CAPSULE",
+      "price": 24.0,
+      "highlight_text": "Generic Ashwagandha Root Powder 300 mg · Lemon Balm 150 mg",
+      "supplement_facts": {
+        "serving_size": "1 Capsule",
+        "servings_per_container": 60,
+        "ingredients": [
+          { "name": "Ashwagandha Root Powder (Withania somnifera)", "amount": "300 mg", "daily_value": "*" },
+          { "name": "Lemon Balm Leaf Extract", "amount": "150 mg", "daily_value": "*" }
+        ],
+        "other_ingredients": "Gelatin capsule, magnesium stearate.",
+        "directions": "Take 1 capsule twice daily.",
+        "warnings": "Unstandardized raw root powder has sub-clinical potency (less than 1% withanolides vs 5% in KSM-66)."
+      }
+    },
+    {
+      "id": "cortisol_blocker",
+      "name": "Cortisol Blocker PM",
+      "form": "TABLET",
+      "price": 38.0,
+      "highlight_text": "Phosphatidylserine 100 mg · Licorice Root 200 mg · Rhodiola 100 mg",
+      "supplement_facts": {
+        "serving_size": "2 Tablets",
+        "servings_per_container": 30,
+        "ingredients": [
+          { "name": "Phosphatidylserine (from soy lecithin)", "amount": "100 mg", "daily_value": "*" },
+          { "name": "Licorice Root Extract (Glycyrrhiza glabra)", "amount": "200 mg", "daily_value": "*" },
+          { "name": "Rhodiola rosea Root Extract", "amount": "100 mg", "daily_value": "*" }
+        ],
+        "other_ingredients": "Cellulose, stearic acid, silicon dioxide.",
+        "directions": "Take 2 tablets daily in the evening.",
+        "warnings": "Un-deglycyrrhizinated licorice root (DGL) can cause sodium retention and elevated blood pressure with prolonged use."
+      }
+    },
+    {
+      "id": "calm_gummies",
+      "name": "CalmBite Gummies",
+      "form": "GUMMY",
+      "price": 20.0,
+      "highlight_text": "GABA 100 mg · Chamomile 50 mg · Added Sugar 6 g",
+      "supplement_facts": {
+        "serving_size": "2 Gummies",
+        "servings_per_container": 30,
+        "ingredients": [
+          { "name": "GABA (Gamma-Aminobutyric Acid)", "amount": "100 mg", "daily_value": "*" },
+          { "name": "Chamomile Flower Extract", "amount": "50 mg", "daily_value": "*" },
+          { "name": "Total Sugars", "amount": "6 g", "daily_value": "12%" }
+        ],
+        "other_ingredients": "Glucose syrup, sugar, pectin, natural peach flavor.",
+        "directions": "Chew 2 gummies when feeling tense.",
+        "warnings": "Oral GABA has poor blood-brain barrier permeability; high sugar content."
+      }
+    },
+    {
+      "id": "st_johns_mood",
+      "name": "Mood Lift St. John's",
+      "form": "CAPSULE",
+      "price": 18.0,
+      "highlight_text": "St. John's Wort Extract 300 mg (0.3% hypericin)",
+      "supplement_facts": {
+        "serving_size": "1 Capsule",
+        "servings_per_container": 60,
+        "ingredients": [
+          { "name": "St. John's Wort Aerial Extract (0.3% hypericin)", "amount": "300 mg", "daily_value": "*" }
+        ],
+        "other_ingredients": "Rice flour, hypromellose.",
+        "directions": "Take 1 capsule three times daily with meals.",
+        "warnings": "Caution: St. John's Wort induces CYP3A4 enzymes and has severe interactions with birth control, antidepressants, and anticoagulants."
+      }
+    }
+  ],
+  "scaffold_chips": {
+    "clarify": [
+      { "id": "c1", "label": "What is KSM-66 Ashwagandha and how does it affect cortisol?", "stage": "clarify" },
+      { "id": "c2", "label": "Which ingredients reduce stress without causing sleepiness?", "stage": "clarify" },
+      { "id": "c3", "label": "Are there dangerous medication interactions to avoid?", "stage": "clarify" }
+    ],
+    "evaluate": [
+      { "id": "e1", "label": "Compare ZenCalm with StressFree Blend on active extract strength", "stage": "evaluate" },
+      { "id": "e2", "label": "Which products contain unstandardized herbal powders?", "stage": "evaluate" }
+    ],
+    "verify": [
+      { "id": "v1", "label": "Does ZenCalm contain the full 600 mg clinical dose of KSM-66?", "stage": "verify" },
+      { "id": "v2", "label": "Does Cortisol Blocker contain un-deglycyrrhizinated licorice root?", "stage": "verify" },
+      { "id": "v3", "label": "Does Mood Lift St. John's interact with prescription medications?", "stage": "verify" }
+    ],
+    "decide": [
+      { "id": "d1", "label": "I'm ready to choose and add to cart", "stage": "decide" }
+    ]
+  }
+}
