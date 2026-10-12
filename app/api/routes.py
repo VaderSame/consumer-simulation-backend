@@ -4,6 +4,8 @@ import uuid
 import random
 
 from app.models.schemas import (
+    AdvisorMessageRequest,
+    AdvisorMessageResponse,
     Condition,
     Trial,
     DecisionSubmission,
@@ -11,6 +13,8 @@ from app.models.schemas import (
     SessionInitResponse,
 )
 from app.data.trials import get_trial_set_a, load_trial_by_id, get_all_trials
+from app.llm.provider import get_model_name
+from app.services.advisor_service import generate_advisor_response
 
 router = APIRouter()
 
@@ -116,4 +120,43 @@ async def submit_decision(submission: DecisionSubmission):
         next_trial_id=next_trial_id,
         is_last_trial=is_last_trial,
         message="Decision recorded successfully."
+    )
+
+
+@router.post("/advisor/message", response_model=AdvisorMessageResponse)
+async def advisor_message(body: AdvisorMessageRequest):
+    """
+    Live follow-up for the shopping advisor.
+
+    The scripted opening is not generated here. The model answers only
+    the participant's question, using that trial's label data.
+    """
+    if body.condition == Condition.CONTROL:
+        raise HTTPException(
+            status_code=400,
+            detail="The control condition has no advisor.",
+        )
+
+    trial = load_trial_by_id(body.trial_id)
+    if not trial:
+        raise HTTPException(status_code=404, detail=f"Trial '{body.trial_id}' not found")
+
+    question = body.message.strip()
+    if not question:
+        raise HTTPException(status_code=400, detail="Message is empty.")
+
+    reply = await generate_advisor_response(
+        trial=trial,
+        condition=body.condition,
+        user_message=question,
+        history=[turn.model_dump() for turn in body.history],
+        active_stage=body.active_stage,
+    )
+
+    return AdvisorMessageResponse(
+        session_id=body.session_id,
+        trial_id=body.trial_id,
+        condition=body.condition,
+        reply=reply,
+        model=get_model_name(),
     )

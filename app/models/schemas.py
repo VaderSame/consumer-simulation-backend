@@ -101,3 +101,25 @@ class DecisionResult(BaseModel):
     next_trial_id: Optional[str] = None
     is_last_trial: bool = False
     message: str
+
+
+class ChatTurn(BaseModel):
+    role: str
+    content: str
+
+
+class AdvisorMessageRequest(BaseModel):
+    session_id: str
+    trial_id: str
+    condition: Condition
+    message: str
+    history: List[ChatTurn] = Field(default_factory=list)
+    active_stage: Optional[str] = None
+
+
+class AdvisorMessageResponse(BaseModel):
+    session_id: str
+    trial_id: str
+    condition: Condition
+    reply: str
+    model: str
