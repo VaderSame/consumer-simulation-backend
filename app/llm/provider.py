@@ -9,6 +9,8 @@ def get_model_name() -> str:
     provider = settings.LLM_PROVIDER.strip().lower()
     if provider == "anthropic":
         return settings.ANTHROPIC_MODEL or "claude-sonnet-4-5"
+    if provider == "openrouter":
+        return settings.OPENROUTER_MODEL
     return settings.OLLAMA_MODEL
 
 
@@ -18,6 +20,7 @@ def get_chat_model() -> BaseChatModel:
 
     Development:
         Ollama -> qwen3:8b
+        OpenRouter -> qwen/qwen3.5-9b
     Final experiment:
         Anthropic -> Claude
 
@@ -37,6 +40,23 @@ def get_chat_model() -> BaseChatModel:
             reasoning=False,
         )
 
+    if provider == "openrouter":
+        if not settings.OPENROUTER_API_KEY:
+            raise RuntimeError(
+                "LLM_PROVIDER is 'openrouter' but OPENROUTER_API_KEY is not set."
+            )
+        from langchain_openai import ChatOpenAI
+
+        return ChatOpenAI(
+            model=settings.OPENROUTER_MODEL,
+            api_key=settings.OPENROUTER_API_KEY,
+            base_url=settings.OPENROUTER_BASE_URL,
+            temperature=settings.LLM_TEMPERATURE,
+            max_tokens=settings.LLM_MAX_TOKENS,
+            # Qwen3 thinking traces must not reach the participant.
+            extra_body={"reasoning": {"enabled": False}},
+        )
+
     if provider == "anthropic":
         if not settings.ANTHROPIC_API_KEY:
             raise RuntimeError(
@@ -52,5 +72,5 @@ def get_chat_model() -> BaseChatModel:
         )
 
     raise ValueError(
-        f"Unsupported LLM_PROVIDER '{settings.LLM_PROVIDER}'. Use 'ollama' or 'anthropic'."
+        f"Unsupported LLM_PROVIDER '{settings.LLM_PROVIDER}'. Use 'ollama', 'openrouter', or 'anthropic'."
     )

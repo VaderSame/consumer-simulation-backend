@@ -14,12 +14,15 @@ class Settings(BaseSettings):
         "http://127.0.0.1:5173",
         "http://localhost:5174",
         "http://127.0.0.1:5174",
+        "https://1wv81v92-5173.use.devtunnels.ms",
+        
     ]
+   
 
     # ------------------------------------------------------------------
     # LLM configuration
     # ------------------------------------------------------------------
-    # ollama | anthropic
+    # ollama | openrouter | anthropic
     LLM_PROVIDER: str = "ollama"
 
     # Keep responses controlled and short for the experiment.
@@ -29,6 +32,11 @@ class Settings(BaseSettings):
     # Local development
     OLLAMA_BASE_URL: str = "http://127.0.0.1:11434"
     OLLAMA_MODEL: str = "qwen3:8b"
+
+    # OpenRouter no longer serves qwen/qwen3-8b. qwen/qwen3.5-9b is the closest live model.
+    OPENROUTER_API_KEY: Optional[str] = None
+    OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
+    OPENROUTER_MODEL: str = "qwen/qwen3.5-9b"
 
     # Final study provider
     ANTHROPIC_API_KEY: Optional[str] = None
