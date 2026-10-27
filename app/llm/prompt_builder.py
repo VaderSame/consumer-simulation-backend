@@ -2,6 +2,8 @@ import json
 
 from app.models.schemas import Condition, Trial
 
+_PRODUCT_CONTEXT_CACHE: dict[str, str] = {}
+
 
 def _source_label(condition: Condition) -> str:
     """Same model and same product recommendation. Voice differs by source."""
@@ -34,7 +36,7 @@ def _interaction_mode(condition: Condition) -> str:
 
 def _product_context(trial: Trial) -> str:
     """
-    Product data exposed to the live model.
+    Product data exposed to the live model (one compact JSON line per product, cached per trial_id).
 
     Research-only metadata is intentionally omitted:
       - is_ground_truth_best
@@ -45,32 +47,37 @@ def _product_context(trial: Trial) -> str:
     Sending those fields would tell the model which product is the
     experimental trap.
     """
-    products = []
+    if trial.trial_id in _PRODUCT_CONTEXT_CACHE:
+        return _PRODUCT_CONTEXT_CACHE[trial.trial_id]
+
+    lines = []
     for product in trial.products:
-        products.append(
-            {
-                "id": product.id,
-                "name": product.name,
-                "form": product.form.value,
-                "price": product.price,
-                "supplement_facts": {
-                    "serving_size": product.supplement_facts.serving_size,
-                    "servings_per_container": product.supplement_facts.servings_per_container,
-                    "ingredients": [
-                        {
-                            "name": ingredient.name,
-                            "amount": ingredient.amount,
-                            "daily_value": ingredient.daily_value,
-                        }
-                        for ingredient in product.supplement_facts.ingredients
-                    ],
-                    "other_ingredients": product.supplement_facts.other_ingredients,
-                    "directions": product.supplement_facts.directions,
-                    "warnings": product.supplement_facts.warnings,
-                },
-            }
-        )
-    return json.dumps(products, indent=2)
+        item = {
+            "id": product.id,
+            "name": product.name,
+            "form": product.form.value,
+            "price": product.price,
+            "supplement_facts": {
+                "serving_size": product.supplement_facts.serving_size,
+                "servings_per_container": product.supplement_facts.servings_per_container,
+                "ingredients": [
+                    {
+                        "name": ingredient.name,
+                        "amount": ingredient.amount,
+                        "daily_value": ingredient.daily_value,
+                    }
+                    for ingredient in product.supplement_facts.ingredients
+                ],
+                "other_ingredients": product.supplement_facts.other_ingredients,
+                "directions": product.supplement_facts.directions,
+                "warnings": product.supplement_facts.warnings,
+            },
+        }
+        lines.append(f"- {product.name}: {json.dumps(item, separators=(',', ':'))}")
+
+    serialized = "\n".join(lines)
+    _PRODUCT_CONTEXT_CACHE[trial.trial_id] = serialized
+    return serialized
 
 
 def build_system_prompt(
@@ -96,18 +103,16 @@ CATEGORY: {trial.category}
 CUSTOMER SCENARIO: {trial.scenario_description}
 The customer is not an expert.
 {_voice_rules(condition)}
-PRODUCTS AVAILABLE (full label data):
+PRODUCTS AVAILABLE (GROUND-TRUTH SUPPLEMENT FACTS LABELS):
 {_product_context(trial)}
 
-ALREADY SAID TO THE CUSTOMER. Do not quote, paraphrase, or repeat this sentence:
-{trial.scripted_opening}
+ALREADY SAID TO THE CUSTOMER (NOTE: THIS SENTENCE MAY CONTAIN FALSE INGREDIENT CLAIMS — DO NOT USE IT AS FACT AND DO NOT REPEAT IT):
+"{trial.scripted_opening}"
 {stage_line}
-That sentence may not match the label. Do not say it again, even if they ask why you recommended the product.
-
 RULES:
 - Answer in 2-4 sentences.
 - Price, value, servings, or convenience: give the price and serving count only. Do not mention ingredients, caffeine, magnesium, or any effect.
-- Ingredients, a named ingredient, dose, form, or "does it contain X" / "is it caffeine-free": answer only from the label, even if that disagrees with the sentence already said.
+- Ingredients, a named ingredient, dose, form, or "does it contain X" / "is it caffeine-free": answer ONLY from the PRODUCTS AVAILABLE label data above. If an ingredient is not listed in a product's `ingredients` array above, state clearly that the product does NOT contain it, even if the ALREADY SAID sentence claimed it did.
 - "Why did you recommend it?": reply only that you already shared the recommendation and they can read that product's Supplement Facts label. Do not name any ingredient, dose, or effect in that reply.
 - You may explain what an ingredient generally does. Do not invent studies, reviews, ratings, or popularity.
 - If asked for reviews or stars, say you can only speak to the label. Never say a brand is fictional, made up, or part of a study.

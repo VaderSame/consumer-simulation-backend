@@ -1,4 +1,6 @@
+import asyncio
 from fastapi import APIRouter, HTTPException, Query
+from fastapi.responses import StreamingResponse
 from typing import Optional, List
 import uuid
 import random
@@ -14,7 +16,11 @@ from app.models.schemas import (
 )
 from app.data.trials import get_trial_set_a, load_trial_by_id, get_all_trials
 from app.llm.provider import get_model_name
-from app.services.advisor_service import generate_advisor_response
+from app.services.advisor_service import (
+    generate_advisor_response,
+    stream_advisor_response,
+    warm_advisor_cache,
+)
 
 router = APIRouter()
 
@@ -41,7 +47,8 @@ async def init_session(
     """
     Initializes a new participant session.
     Randomly assigns to 1 of 4 conditions (or honors researcher force_condition),
-    and generates a counterbalanced steer schedule (2 steer trials out of 4).
+    generates a counterbalanced steer schedule (2 steer trials out of 4),
+    and silently pre-warms the LLM connection and prefix cache in the background.
     """
     session_id = f"sess_{uuid.uuid4().hex[:12]}"
     
@@ -60,6 +67,12 @@ async def init_session(
 
     trial_data = get_trial_set_a()
 
+    # Pre-warm the LLM connection & system prompt prefix cache in the background
+    if assigned_condition != Condition.CONTROL:
+        asyncio.create_task(
+            warm_advisor_cache(trial=trial_data, condition=assigned_condition)
+        )
+
     return SessionInitResponse(
         session_id=session_id,
         condition=assigned_condition,
@@ -76,13 +89,40 @@ async def list_trials():
 
 
 @router.get("/trial/{trial_id}", response_model=Trial)
-async def get_trial(trial_id: str):
-    """Returns trial stimuli and configuration for a given trial ID."""
+async def get_trial(
+    trial_id: str,
+    condition: Optional[Condition] = Query(None),
+):
+    """
+    Returns trial stimuli and configuration for a given trial ID,
+    and triggers a non-blocking LLM cache warm-up for that trial.
+    """
     trial = load_trial_by_id(trial_id)
     if not trial:
         raise HTTPException(status_code=404, detail=f"Trial '{trial_id}' not found")
+
+    target_condition = condition or Condition.AI_FREE
+    if target_condition != Condition.CONTROL:
+        asyncio.create_task(
+            warm_advisor_cache(trial=trial, condition=target_condition)
+        )
+
     return trial
 
+
+@router.post("/advisor/warm")
+async def warm_advisor(
+    trial_id: str = Query(...),
+    condition: Condition = Query(...),
+):
+    """
+    Non-blocking endpoint to pre-warm the advisor connection and prefix cache
+    when switching conditions or trials in the UI.
+    """
+    trial = load_trial_by_id(trial_id)
+    if trial and condition != Condition.CONTROL:
+        asyncio.create_task(warm_advisor_cache(trial=trial, condition=condition))
+    return {"status": "warming"}
 
 
 @router.post("/decision", response_model=DecisionResult)
@@ -123,14 +163,7 @@ async def submit_decision(submission: DecisionSubmission):
     )
 
 
-@router.post("/advisor/message", response_model=AdvisorMessageResponse)
-async def advisor_message(body: AdvisorMessageRequest):
-    """
-    Live follow-up for the shopping advisor.
-
-    The scripted opening is not generated here. The model answers only
-    the participant's question, using that trial's label data.
-    """
+def _validate_advisor_request(body: AdvisorMessageRequest) -> tuple[Trial, str]:
     if body.condition == Condition.CONTROL:
         raise HTTPException(
             status_code=400,
@@ -144,6 +177,16 @@ async def advisor_message(body: AdvisorMessageRequest):
     question = body.message.strip()
     if not question:
         raise HTTPException(status_code=400, detail="Message is empty.")
+
+    return trial, question
+
+
+@router.post("/advisor/message", response_model=AdvisorMessageResponse)
+async def advisor_message(body: AdvisorMessageRequest):
+    """
+    Live follow-up for the shopping advisor (non-streaming).
+    """
+    trial, question = _validate_advisor_request(body)
 
     reply = await generate_advisor_response(
         trial=trial,
@@ -159,4 +202,28 @@ async def advisor_message(body: AdvisorMessageRequest):
         condition=body.condition,
         reply=reply,
         model=get_model_name(),
+    )
+
+
+@router.post("/advisor/stream")
+async def advisor_message_stream(body: AdvisorMessageRequest):
+    """
+    Streams the live advisor response token-by-token so the frontend renders immediately.
+    """
+    trial, question = _validate_advisor_request(body)
+    history_dicts = [turn.model_dump() for turn in body.history]
+
+    return StreamingResponse(
+        stream_advisor_response(
+            trial=trial,
+            condition=body.condition,
+            user_message=question,
+            history=history_dicts,
+            active_stage=body.active_stage,
+        ),
+        media_type="text/plain; charset=utf-8",
+        headers={
+            "Cache-Control": "no-cache",
+            "X-Accel-Buffering": "no",
+        },
     )

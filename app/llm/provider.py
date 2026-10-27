@@ -1,6 +1,7 @@
+from functools import lru_cache
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_ollama import ChatOllama
-
+from langchain_openai import ChatOpenAI
 from app.core.config import settings
 
 
@@ -14,9 +15,10 @@ def get_model_name() -> str:
     return settings.OLLAMA_MODEL
 
 
+@lru_cache(maxsize=1)
 def get_chat_model() -> BaseChatModel:
     """
-    Returns the configured chat model.
+    Returns the cached chat model instance (preserving HTTP keep-alive connection pools).
 
     Development:
         Ollama -> qwen3:8b
@@ -45,16 +47,20 @@ def get_chat_model() -> BaseChatModel:
             raise RuntimeError(
                 "LLM_PROVIDER is 'openrouter' but OPENROUTER_API_KEY is not set."
             )
-        from langchain_openai import ChatOpenAI
+
+        base_url = settings.OPENROUTER_SERVER or settings.OPENROUTER_BASE_URL
 
         return ChatOpenAI(
             model=settings.OPENROUTER_MODEL,
             api_key=settings.OPENROUTER_API_KEY,
-            base_url=settings.OPENROUTER_BASE_URL,
+            base_url=base_url,
             temperature=settings.LLM_TEMPERATURE,
             max_tokens=settings.LLM_MAX_TOKENS,
-            # Qwen3 thinking traces must not reach the participant.
-            extra_body={"reasoning": {"enabled": False}},
+            # Suppress Qwen3 thinking traces and force OpenRouter to route to lowest-latency host.
+            extra_body={
+                "reasoning": {"enabled": False},
+                "provider": {"sort": "latency"},
+            },
         )
 
     if provider == "anthropic":

@@ -15,6 +15,7 @@ class Settings(BaseSettings):
         "http://localhost:5174",
         "http://127.0.0.1:5174",
         "https://1wv81v92-5173.use.devtunnels.ms",
+        "https://6tn00q90-5173.use.devtunnels.ms",
         
     ]
    
@@ -27,7 +28,7 @@ class Settings(BaseSettings):
 
     # Keep responses controlled and short for the experiment.
     LLM_TEMPERATURE: float = 0.2
-    LLM_MAX_TOKENS: int = 350
+    LLM_MAX_TOKENS: int = 160
 
     # Local development
     OLLAMA_BASE_URL: str = "http://127.0.0.1:11434"
@@ -36,6 +37,7 @@ class Settings(BaseSettings):
     # OpenRouter no longer serves qwen/qwen3-8b. qwen/qwen3.5-9b is the closest live model.
     OPENROUTER_API_KEY: Optional[str] = None
     OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
+    OPENROUTER_SERVER: Optional[str] = None
     OPENROUTER_MODEL: str = "qwen/qwen3.5-9b"
 
     # Final study provider
