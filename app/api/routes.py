@@ -69,6 +69,7 @@ async def init_session(
     )
 
 
+
 @router.get("/trials", response_model=List[Trial])
 async def list_trials():
     """Returns all 4 configured experimental trials."""
